@@ -1,20 +1,19 @@
 import * as types from '../types';
 
 export const ACTIONS_IDS = {
-  checkScenarioFile: 0,
+  checkScenarioSyntax: 0,
   visualizeScenarioFile: 1,
-  executeOperartion: 2,
+  visualizationStatus: 6,
+  executeOperation: 2,
   executeScenario: 3,
-  setScenarioFile: 4,
-  visualizationGenerating: 5,
-  visualizationGenerated: 6,
-  simulateAction: 7,
-  simpleInvocation: 8,
+  cancelExecution: 4,
+  setCurrentScenarioFile: 5,
 };
 
 export const defaultEditorState: types.DefaultWorkBenchStateType = {
-  currentValidScenario: {},
-  upForVisualization: false,
+  currentScenario: {},
+  visualizationRequested: false,
   scenarioUpdated: false,
-  pendingActions: [],
+  pendingRequestExecutions: [],
+  applicationActionsHistory: [],
 };

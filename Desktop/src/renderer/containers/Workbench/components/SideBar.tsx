@@ -10,6 +10,7 @@ import { WorkBenchContext } from '..';
 function SideBar(): JSX.Element {
   const WBContext = useContext(WorkBenchContext);
 
+  console.log('SIDEBAR');
   function VisualizeScenario() {
     console.log('clicked');
     WBContext.dispatch({ type: ACTIONS_IDS.visualizeScenarioFile });

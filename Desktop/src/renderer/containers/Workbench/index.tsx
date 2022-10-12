@@ -18,11 +18,15 @@ function ScenarioWorkbench(): JSX.Element {
     console.log('memo');
     return ScenarioEditor;
   }, []);
+
+  const ScenarioVisualizerMemo = useMemo(() => {
+    return ScenarioVisualizer;
+  }, []);
   return (
     <WorkBenchContext.Provider value={{ state, dispatch }}>
       <SideBar />
       <ScenarioEditorMemo />
-      <ScenarioVisualizer />
+      <ScenarioVisualizerMemo />
     </WorkBenchContext.Provider>
   );
 }

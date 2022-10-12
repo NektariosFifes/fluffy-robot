@@ -23,7 +23,7 @@ function ScenarioEditor(): JSX.Element {
 
   const setUpForVisualization = useCallback(
     (value) => {
-      WBContext.state.upForVisualization = value;
+      WBContext.state.visualizationRequested = value;
     },
     [WBContext.state]
   );
@@ -33,10 +33,10 @@ function ScenarioEditor(): JSX.Element {
       return getContent();
     }
     function updateVisualizationObj(_event: any, obj: any) {
-      WBContext.dispatch({ type: ACTIONS_IDS.setScenarioFile, payload: obj });
+      WBContext.dispatch({ type: ACTIONS_IDS.setCurrentScenarioFile, payload: obj });
     }
     console.log('effectara');
-    if (WBContext.state.upForVisualization === true) {
+    if (WBContext.state.visualizationRequested === true) {
       ipcRenderer.on('editor/visualizationReady', updateVisualizationObj);
       ipcRenderer.send('editor/visualizeRequest', getCurrentScenario());
       setUpForVisualization(false);
@@ -53,7 +53,7 @@ function ScenarioEditor(): JSX.Element {
   }, [
     setUpForVisualization,
     getContent,
-    WBContext.state.upForVisualization,
+    WBContext.state.visualizationRequested,
     WBContext,
   ]);
   return (

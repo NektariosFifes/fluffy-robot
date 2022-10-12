@@ -16,7 +16,7 @@ export const WorkBenchReducer = (state: any, action: any) => {
       console.log('visualizeScenarioFile');
       return { ...state, upForVisualization: true };
 
-    case ACTIONS_IDS.setScenarioFile:
+    case ACTIONS_IDS.setCurrentScenarioFile:
       console.log('setScenarioFile');
       console.log(action);
       return {
@@ -30,7 +30,7 @@ export const WorkBenchReducer = (state: any, action: any) => {
 
         scenarioFilepath: action.payload.operation,
       };
-    case ACTIONS_IDS.visualizationGenerating:
+    case ACTIONS_IDS.visualizationChangeStatus:
       return {
         ...state,
         scenarioUpdated: false,

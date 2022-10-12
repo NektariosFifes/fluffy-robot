@@ -87,13 +87,20 @@ function ScenarioVisualizer(props: any): JSX.Element {
     console.log('visualizer');
 
     if (actionsRegister.pendingAction) {
-      ipcRenderer.send('editor/action', actionsRegister.pendingAction);
+      ipcRenderer
+        .invoke('editor/action', actionsRegister.pendingAction)
+        .then((r) =>
+          WBContext.dispatch({
+            type: ACTIONS_IDS.visualizationChangeStatus,
+          })
+        )
+        .catch((err) => {});
     }
     if (WBContext.state.scenarioUpdated === true) {
       console.log('GENERATING');
       setLocalState(WBContext.state.currentValidScenario);
       WBContext.dispatch({
-        type: ACTIONS_IDS.visualizationGenerating,
+        type: ACTIONS_IDS.visualizationChangeStatus,
       });
 
       // WBContext.dispatch({ type: ACTIONS_IDS.visualizationGenerating });
