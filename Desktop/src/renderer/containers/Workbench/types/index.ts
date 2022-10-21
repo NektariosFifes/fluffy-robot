@@ -3,11 +3,6 @@ import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ScenarioObject {}
 
-interface Person {
-  name: string;
-  age: number;
-}
-
 interface RequestCollection {
   [id: string]:
     | 'resolved'
@@ -26,7 +21,6 @@ interface ApplicationAction {
 
 export type DefaultWorkBenchStateType = {
   currentScenario: ScenarioObject;
-  visualizationRequested: boolean;
   scenarioUpdated: boolean;
   pendingRequestExecutions: RequestCollection;
   applicationActionsHistory: Array<ApplicationAction>;

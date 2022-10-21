@@ -66,9 +66,7 @@ ipcMain.handle('editor/action', async (_event, actionName) => {
 
   await managerInstance.startScenario(actionName);
 
-
-
-  return
+  return;
   // managerInstance
   //   .createReqHandler(dataFromParser)
   //   .then(() => {
@@ -145,6 +143,11 @@ const createWindow = async () => {
       mainWindow.show();
       mainWindow.focus();
     }
+  });
+
+  ipcMain.handle('my-invokable-ipc', async (event, ...args) => {
+    const result = await somePromise(...args);
+    return result;
   });
 
   mainWindow.on('closed', () => {
