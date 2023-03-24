@@ -3,6 +3,9 @@ const filesystem = require('fs');
 const Ajv = require('ajv');
 const scenarioSpecs = require('../Schema');
 const yamlParser  = require('js-yaml');
+
+const ajv = new Ajv({allowMatchingProperties: true,strict: true,allErrors: true, verbose: true});
+
 /**
  * Parses asyncApi and scenario files.
  * @param filepathAsyncApi
@@ -10,7 +13,6 @@ const yamlParser  = require('js-yaml');
  * @returns {Promise<(*|*|string|Chai.Assertion)[]>}
  */
 const parseFiles  = async (filepathAsyncApi, filepathScenario,basedir) => {
-  const ajv = new Ajv({allowMatchingProperties: true,strict: true,allErrors: true, verbose: true});
   let asyncApiContent;
   try {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
@@ -43,4 +45,21 @@ const parseFiles  = async (filepathAsyncApi, filepathScenario,basedir) => {
   return [asyncApiParsed,scenarioParsed];
 };
 
-module.exports = {parseFiles};
+const parseScenario  = async (scenarioContent) => {
+  const scenarioParsed = JSON.parse(scenarioContent);
+  const validate = ajv.compile(scenarioSpecs[scenarioParsed.version]);
+  if (!validate) {
+    console.log('\nWrong or unavailable schema version be sure to check the spec for more info.');
+  }
+  const valid = ajv.validate(scenarioSpecs[scenarioParsed.version],scenarioParsed);
+  if (!valid) {
+    console.log(`\nError the provided scenario file does does not comply with the spec of version ${scenarioParsed.version}\nDetails: `,validate.errors);
+    process.emit('SIGINT');
+  }
+};
+
+const parseAsyncApi  = async (ayncApiContent,basedir) => {
+  return await parser.parse(ayncApiContent, {path: basedir});
+};
+
+module.exports = {parseFiles,parseScenario,parseAsyncApi};
