@@ -1,7 +1,7 @@
 # This action is centrally managed in https://github.com/asyncapi/.github/
 # Don't make changes to this file in this repo as they will be overwritten with changes made to the same file in above mentioned repo
 
-# Purpose of this action is to update npm package in libraries that use it. It is like dependabot for asyncapi npm modules only. 
+# Purpose of this action is to update npm package in libraries that use it. It is like dependabot for asyncapi npm modules only.
 # It runs in a repo after merge of release commit and searches for other packages that use released package. Every found package gets updated with lates version
 
 name: Bump package version in dependent repos - if Node project
@@ -12,6 +12,11 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch: # Add this section to enable manual triggering
+    inputs:
+      trigger-bot-workflow:
+        description: 'Trigger the bot workflow manually'
+        required: false
 
 jobs:
   bump-in-dependent-projects:
@@ -20,13 +25,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Check if Node.js project and has package.json
         id: packagejson
-        run: test -e ./package.json && echo "::set-output name=exists::true" || echo "::set-output name=exists::false"
+        run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
       - if: steps.packagejson.outputs.exists == 'true'
         name: Bumping latest version of this package in other repositories
-        uses: derberg/npm-dependency-manager-for-your-github-org@v4
+        uses: derberg/npm-dependency-manager-for-your-github-org@26a4f13d740254719971325046822a169aaa7441 # using v5.-.- https://github.com/derberg/npm-dependency-manager-for-your-github-org/releases/tag/v5.0.0
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           committer_username: asyncapi-bot
